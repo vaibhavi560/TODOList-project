@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+
+  form {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"], select, button, input[type="date"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #45a049;
+  }
+
+  .task {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+  .task h3 {
+    margin-top: 0;
+    color: #333;
+  }
+
+  .meta-info {
+    margin-top: 5px;
+    color: #666;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>To-Do List</h1>
+  <form id="taskForm">
+    <label for="taskInput">Task:</label>
+    <input type="text" id="taskInput" placeholder="Enter task..." required>
+    
+    <label for="priority">Priority:</label>
+    <select id="priority" required>
+      <option value="low">Low Priority</option>
+      <option value="medium">Medium Priority</option>
+      <option value="high">High Priority</option>
+    </select>
+    
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline">
+    
+    <label for="labelInput">Labels (comma-separated):</label>
+    <input type="text" id="labelInput" placeholder="Enter labels...">
+    
+    <button type="submit">Add Task</button>
+  </form>
+
+  <section id="taskList"></section>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const taskForm = document.getElementById("taskForm");
+  taskForm.addEventListener("submit", addTask);
+});
+
+function addTask(event) {
+  event.preventDefault();
+
+  var taskInput = document.getElementById("taskInput");
+  var prioritySelect = document.getElementById("priority");
+  var deadlineInput = document.getElementById("deadline");
+  var labelInput = document.getElementById("labelInput");
+
+  var taskText = taskInput.value.trim();
+  var priority = prioritySelect.value;
+  var deadline = deadlineInput.value;
+  var labels = labelInput.value.split(",").map(label => label.trim());
+
+  if (taskText === "") {
+    alert("Please enter a task!");
+    return;
+  }
+
+  var taskList = document.getElementById("taskList");
+
+  var taskDiv = document.createElement("div");
+  taskDiv.classList.add("task");
+
+  var taskHeader = document.createElement("h3");
+  taskHeader.textContent = taskText;
+
+  var metaInfo = document.createElement("p");
+  metaInfo.classList.add("meta-info");
+  metaInfo.innerHTML = "<strong>Priority:</strong> " + priority + ", <strong>Deadline:</strong> " + deadline + ", <strong>Labels:</strong> " + labels.join(", ");
+
+  taskDiv.appendChild(taskHeader);
+  taskDiv.appendChild(metaInfo);
+  taskList.appendChild(taskDiv);
+
+
+  taskForm.reset();
+}
+</script>
+</body>
+</html>
